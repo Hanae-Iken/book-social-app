@@ -21,6 +21,7 @@ import static org.springframework.mail.javamail.MimeMessageHelper.MULTIPART_MODE
 @Slf4j
 @RequiredArgsConstructor
 public class EmailService {
+
     private final JavaMailSender mailSender;
     private final SpringTemplateEngine templateEngine;
 
@@ -32,28 +33,33 @@ public class EmailService {
             String confirmationUrl,
             String activationCode,
             String subject
-    ) throws MessagingException {
+    )throws MessagingException {
         String templateName;
-        if (emailTemplate == null) {
+        if(emailTemplate == null){
             templateName = "confirm-email";
-        } else {
+        }else{
             templateName = emailTemplate.name();
         }
+
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(
                 mimeMessage,
                 MULTIPART_MODE_MIXED,
                 UTF_8.name()
         );
+        Map<String, Object> propertiies = new HashMap<>();
+        propertiies.put("username", username);
+        propertiies.put("confirmationUrl", confirmationUrl);
+        propertiies.put("activationCode", activationCode);
         Map<String, Object> properties = new HashMap<>();
         properties.put("username", username);
         properties.put("confirmationUrl", confirmationUrl);
         properties.put("activation_code", activationCode);
 
         Context context = new Context();
-        context.setVariables(properties);
+        context.setVariables(propertiies);
 
-        helper.setFrom("contact@aliboucoding.com");
+        helper.setFrom("hanaeiken572@gmail.com");
         helper.setTo(to);
         helper.setSubject(subject);
 
