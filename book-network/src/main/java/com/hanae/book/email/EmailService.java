@@ -51,10 +51,6 @@ public class EmailService {
         propertiies.put("username", username);
         propertiies.put("confirmationUrl", confirmationUrl);
         propertiies.put("activationCode", activationCode);
-        Map<String, Object> properties = new HashMap<>();
-        properties.put("username", username);
-        properties.put("confirmationUrl", confirmationUrl);
-        properties.put("activation_code", activationCode);
 
         Context context = new Context();
         context.setVariables(propertiies);
