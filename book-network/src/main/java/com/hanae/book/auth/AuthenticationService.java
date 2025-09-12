@@ -1,11 +1,15 @@
 package com.hanae.book.auth;
 
+import com.hanae.book.email.EmailService;
 import com.hanae.book.role.RoleRepository;
 import com.hanae.book.user.Token;
 import com.hanae.book.user.TokenRepository;
 import com.hanae.book.user.User;
 import com.hanae.book.user.UserRepository;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.token.TokenService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +25,9 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final TokenRepository tokenRepository;
+    private final EmailService emailService;
+    @Value("http://localhost:4200/activate-account")
+    private String activationUrl;
 
     public void register(RegistrationRequest request) {
         var userRole = roleRepository.findByName("USER")
@@ -66,5 +73,10 @@ public class AuthenticationService {
             codeBuilder.append(characters.charAt(randomIndex));
         }
         return codeBuilder.toString();
+    }
+
+    public AuthenticationResponse authenticate(AuthenticationRequest request) {
+        var auth =
+        return null;
     }
 }
