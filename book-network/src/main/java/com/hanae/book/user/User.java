@@ -1,5 +1,7 @@
 package com.hanae.book.user;
 
+import com.hanae.book.book.Book;
+import com.hanae.book.history.BookTransactionHistory;
 import com.hanae.book.role.Role;
 import jakarta.persistence.*;
 import lombok.*;
@@ -23,7 +25,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 @EntityListeners(AuditingEntityListener.class)
 public class User implements UserDetails, Principal {
 
@@ -41,6 +43,12 @@ public class User implements UserDetails, Principal {
 
     @ManyToMany(fetch = FetchType.EAGER)
      private List<Role> roles;
+
+    @OneToMany(mappedBy = "owner")
+    private List<Book> books;
+
+    @OneToMany(mappedBy = "user")
+    private List<BookTransactionHistory> histories;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
