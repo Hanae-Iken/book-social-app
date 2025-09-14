@@ -11,6 +11,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
+import static com.hanae.book.book.BookSpecification.withOwnerId;
+
 @Service
 @RequiredArgsConstructor
 public class BookService {
@@ -36,6 +40,36 @@ public class BookService {
         User user = (User) connecteUser.getPrincipal();
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
         Page<Book> books = bookRepository.findAllDisplayableBooks(pageable, user.getId());
-        return null;
+        List<BookResponse> bookResponse = books.stream()
+                .map(bookMapper::toBookReponse)
+                .toList();
+        return new PageResponse<>(
+                bookResponse,
+                books.getNumber(),
+                books.getSize(),
+                books.getTotalElements(),
+                books.getTotalPages(),
+                books.isFirst(),
+                books.isLast()
+        );
+    }
+
+    public PageResponse<BookResponse> findAllBooksByOwner(int page, int size, Authentication connecteUser) {
+        User user = (User) connecteUser.getPrincipal();
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
+        Page<Book> books = bookRepository.findAll(withOwnerId(user.getId()), pageable);
+
+        List<BookResponse> bookResponse = books.stream()
+                .map(bookMapper::toBookReponse)
+                .toList();
+        return new PageResponse<>(
+                bookResponse,
+                books.getNumber(),
+                books.getSize(),
+                books.getTotalElements(),
+                books.getTotalPages(),
+                books.isFirst(),
+                books.isLast()
+        );
     }
 }
