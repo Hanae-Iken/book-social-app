@@ -2,6 +2,7 @@ package com.hanae.book.book;
 
 import com.hanae.book.common.PageResponse;
 import com.hanae.book.exception.OperationNotPermittedException;
+import com.hanae.book.file.FileStorageService;
 import com.hanae.book.history.BookTransactionHistory;
 import com.hanae.book.history.BookTransactionHistoryRepository;
 import com.hanae.book.user.User;
@@ -13,10 +14,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 import static com.hanae.book.book.BookSpecification.withOwnerId;
 
@@ -27,6 +28,7 @@ public class BookService {
     private final BookRepository bookRepository;
     private final BookTransactionHistoryRepository transactionHistoryRepository;
     private final BookMapper bookMapper;
+    private final FileStorageService fileStorageService;
 
     public Integer save(BookRequest request, Authentication connecteUser) {
         User user = (User) connecteUser.getPrincipal();
@@ -193,6 +195,15 @@ public class BookService {
         bookTransactionHistory.setReturnApproved(true);
 
         return transactionHistoryRepository.save(bookTransactionHistory).getId();
+    }
+
+    public void uploadBookCoverPicture(MultipartFile file, Authentication connectedUser, Integer bookId) {
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new EntityNotFoundException("No Book found with the ID:: " + bookId));
+        User user = (User) connectedUser.getPrincipal();
+        var bookCover = fileStorageService.saveFile(file, user.getId());
+        book.setBookCover(bookCover);
+        bookRepository.save(book);
     }
 }
 
