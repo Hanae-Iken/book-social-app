@@ -1,5 +1,6 @@
 package com.hanae.book.book;
 
+import com.hanae.book.file.FileUtils;
 import com.hanae.book.history.BookTransactionHistory;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +28,7 @@ public class BookMapper {
                 .rate(book.getRate())
                 .archived(book.isArchived())
                 .owner(book.getOwner().fullName())
-                //.cover()
+                .cover(FileUtils.readFromLocation(book.getBookCover()))
                 .build();
     }
 
