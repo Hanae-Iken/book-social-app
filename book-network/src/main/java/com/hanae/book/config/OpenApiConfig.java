@@ -18,8 +18,8 @@ import io.swagger.v3.oas.annotations.servers.Server;
                         url = "http://hanaeiken.vercel.app"
                 ),
                 description = "OpenApi documentation for Spring security",
-                title = "OpenApi specification",
-                version = "1.0",
+                title = "OpenApi specification - Hanae",
+                version = "7.0",
                 license = @License(
                         name = "Licence name",
                         url = "https://some-url.com"
