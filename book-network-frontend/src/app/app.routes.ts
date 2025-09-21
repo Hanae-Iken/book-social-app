@@ -2,7 +2,6 @@ import { Routes } from '@angular/router';
 import {LoginComponent} from './pages/login/login.component';
 import {RegisterComponent} from './pages/register/register.component';
 import {ActivateAccountComponent} from './pages/activate-account/activate-account.component';
-import * as path from 'node:path';
 
 export const routes: Routes = [
   {
