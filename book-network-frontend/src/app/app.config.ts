@@ -1,9 +1,10 @@
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
-import {provideHttpClient} from '@angular/common/http';
+import {provideHttpClient, withInterceptors} from '@angular/common/http';
 import { routes } from './app.routes';
 
 import { ApiConfiguration } from './services/api-configuration';
+import {httpTokenInterceptor} from './services/interceptor/http-token.interceptor';
 // import { BookService, UserService } from './services/services'; // ← Services générés
 
 
@@ -17,7 +18,9 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideHttpClient(),
+    provideHttpClient(
+      withInterceptors([httpTokenInterceptor]) // ← Nouvelle façon
+    ),
     // Configuration de l'API
     { provide: ApiConfiguration, useValue: apiConfig }
   ]
