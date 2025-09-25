@@ -30,29 +30,28 @@ public class BookService {
     private final BookMapper bookMapper;
     private final FileStorageService fileStorageService;
 
-    public Integer save(BookRequest request, Authentication connecteUser) {
-        User user = (User) connecteUser.getPrincipal();
+    public Integer save(BookRequest request, Authentication connectedUser) {
+        // User user = ((User) connectedUser.getPrincipal());
         Book book = bookMapper.toBook(request);
-        book.setOwner(user);
+        // book.setOwner(user);
         return bookRepository.save(book).getId();
     }
 
     public BookResponse findById(Integer bookId) {
         return bookRepository.findById(bookId)
                 .map(bookMapper::toBookReponse)
-                .orElseThrow(() -> new EntityNotFoundException("No Book found with the ID:: " + bookId));
-
+                .orElseThrow(() -> new EntityNotFoundException("No book found with ID:: " + bookId));
     }
 
-    public PageResponse<BookResponse> findAllBooks(int page, int size, Authentication connecteUser) {
-        User user = (User) connecteUser.getPrincipal();
+    public PageResponse<BookResponse> findAllBooks(int page, int size, Authentication connectedUser) {
+        // User user = ((User) connectedUser.getPrincipal());
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
-        Page<Book> books = bookRepository.findAllDisplayableBooks(pageable, user.getId());
-        List<BookResponse> bookResponse = books.stream()
+        Page<Book> books = bookRepository.findAllDisplayableBooks(pageable, connectedUser.getName());
+        List<BookResponse> booksResponse = books.stream()
                 .map(bookMapper::toBookReponse)
                 .toList();
         return new PageResponse<>(
-                bookResponse,
+                booksResponse,
                 books.getNumber(),
                 books.getSize(),
                 books.getTotalElements(),
