@@ -1,24 +1,28 @@
 import {Component, OnInit} from '@angular/core';
-import {BookService} from '../../../../services/services/book.service';
-import {Router} from '@angular/router';
+import {BookCardComponent} from "../../components/book-card/book-card.component";
+import {NgForOf, NgIf} from "@angular/common";
 import {PageResponseBookResponse} from '../../../../services/models/page-response-book-response';
-import { CommonModule } from '@angular/common';
-import {BookCardComponent} from '../../components/book-card/book-card.component';
+import {BookService} from '../../../../services/services/book.service';
+import {Router, RouterLink} from '@angular/router';
 import {BookResponse} from '../../../../services/models/book-response';
 
 @Component({
-  selector: 'app-book-list',
+  selector: 'app-my-books',
   standalone: true,
-  imports: [CommonModule, BookCardComponent],
-  templateUrl: './book-list.component.html',
-  styleUrl: './book-list.component.scss'
+  imports: [
+    BookCardComponent,
+    NgForOf,
+    NgIf,
+    RouterLink
+  ],
+  templateUrl: './my-books.component.html',
+  styleUrl: './my-books.component.scss'
 })
-export class BookListComponent implements OnInit{
+export class MyBooksComponent implements OnInit{
+
   bookResponse: PageResponseBookResponse = {};
   page = 0;
   size = 5;
-  message= '';
-  level = 'success';
 
   constructor(
     private bookService: BookService,
@@ -28,10 +32,10 @@ export class BookListComponent implements OnInit{
 
   ngOnInit(): void {
     this.findAllBooks();
-    }
+  }
 
   private findAllBooks() {
-    this.bookService.findAllBooks({
+    this.bookService.findAllBooksByOwner({
       page: this.page,
       size: this.size
     }).subscribe({
@@ -72,21 +76,15 @@ export class BookListComponent implements OnInit{
 
   protected readonly event = event;
 
-  borrowBook(book: BookResponse) {
-    this.message = '';
-    this.bookService.borrowBook({
-      'book-id': book.id as number
-    }).subscribe({
-      next: ()=>{
-        this.level = 'success';
-        this.message = 'Book successfully added to your list';
-      },
-      error: (err) =>{
-        console.log(err);
-        this.level = 'error';
-        this.message = err.error.error;
-      }
-    });
+  archiveBook(book: BookResponse) {
+
   }
-  protected readonly frameElement= frameElement;
+
+  shareBook(book: BookResponse) {
+
+  }
+
+  editBook(book: BookResponse) {
+
+  }
 }
