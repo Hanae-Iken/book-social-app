@@ -77,7 +77,13 @@ export class MyBooksComponent implements OnInit{
   protected readonly event = event;
 
   archiveBook(book: BookResponse) {
-
+    this.bookService.updateArchivedStatus({
+      'book-id': book.id as number
+    }).subscribe({
+      next: () => {
+        book.archived = !book.archived;
+      }
+    });
   }
 
   shareBook(book: BookResponse) {
