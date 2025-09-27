@@ -4,6 +4,7 @@ import {Router} from '@angular/router';
 import {PageResponseBookResponse} from '../../../../services/models/page-response-book-response';
 import { CommonModule } from '@angular/common';
 import {BookCardComponent} from '../../components/book-card/book-card.component';
+import {BookResponse} from '../../../../services/models/book-response';
 
 @Component({
   selector: 'app-book-list',
@@ -16,10 +17,11 @@ export class BookListComponent implements OnInit{
   bookResponse: PageResponseBookResponse = {};
   page = 0;
   size = 5;
+  message= '';
 
   constructor(
     private bookService: BookService,
-    private roouter: Router
+    private router: Router
   ) {
   }
 
@@ -65,5 +67,19 @@ export class BookListComponent implements OnInit{
 
   get isLastPage():boolean {
     return this.page == this.bookResponse.totalPages as number - 1;
+  }
+
+  protected readonly event = event;
+
+  borrowBook(book: BookResponse) {
+    this.message = '';
+    this.bookService.borrowBook({
+      'book-id': book.id as number
+    }).subscribe({
+      next: ()=>{
+        this.message = 'Book successfully added to your list';
+      }
+    });
+
   }
 }
