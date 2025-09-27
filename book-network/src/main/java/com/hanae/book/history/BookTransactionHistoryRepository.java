@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -34,6 +35,15 @@ public interface BookTransactionHistoryRepository extends JpaRepository<BookTran
              AND bookTransactionHistory.returnApproved = false
              """)
     boolean isAlreadyBorrowedByUser(Integer bookId, Integer userId);
+
+    @Query("""
+            SELECT
+            (COUNT (*) > 0) AS isBorrowed
+            FROM BookTransactionHistory bookTransactionHistory
+            WHERE bookTransactionHistory.book.id = :bookId
+            AND bookTransactionHistory.returnApproved = false
+            """)
+    boolean isAlreadyBorrowed(@Param("bookId") Integer bookId);
 
     @Query("""
             SELECT transaction

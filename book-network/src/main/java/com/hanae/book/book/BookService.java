@@ -61,16 +61,15 @@ public class BookService {
         );
     }
 
-    public PageResponse<BookResponse> findAllBooksByOwner(int page, int size, Authentication connecteUser) {
-        User user = (User) connecteUser.getPrincipal();
+    public PageResponse<BookResponse> findAllBooksByOwner(int page, int size, Authentication connectedUser) {
+        User user = ((User) connectedUser.getPrincipal());
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
-        Page<Book> books = bookRepository.findAll(withOwnerId(user.getId()), pageable);
-
-        List<BookResponse> bookResponse = books.stream()
+        Page<Book> books = bookRepository.findAll(withOwnerId(user.getId()), pageable); // user.getId() au lieu de connectedUser.getName()
+        List<BookResponse> booksResponse = books.stream()
                 .map(bookMapper::toBookReponse)
                 .toList();
         return new PageResponse<>(
-                bookResponse,
+                booksResponse,
                 books.getNumber(),
                 books.getSize(),
                 books.getTotalElements(),
@@ -142,18 +141,31 @@ public class BookService {
 
     public Integer borrowBook(Integer bookId, Authentication connectedUser) {
         Book book = bookRepository.findById(bookId)
-                .orElseThrow(() -> new EntityNotFoundException("No Book found with the ID:: " + bookId));
-        if(book.isArchived() || !book.isShareable()) {
+                .orElseThrow(() -> new EntityNotFoundException("No book found with ID:: " + bookId));
+
+        if (book.isArchived() || !book.isShareable()) {
             throw new OperationNotPermittedException("The requested book cannot be borrowed since it is archived or not shareable");
         }
-        User user = (User) connectedUser.getPrincipal();
-        if(!Objects.equals(book.getOwner().getId(), user.getId())) {
-            throw new OperationNotPermittedException("You can not borrow your own book");
+
+        // Récupérer l'objet User complet
+        User user = ((User) connectedUser.getPrincipal());
+
+        // Vérifier si l'utilisateur essaie d'emprunter son propre livre
+        if (Objects.equals(book.getCreatedBy(), user.getId())) { // Comparer avec l'ID
+            throw new OperationNotPermittedException("You cannot borrow your own book");
         }
-        final boolean isAlreadyBorrowed = transactionHistoryRepository.isAlreadyBorrowedByUser(bookId, user.getId());
-        if(isAlreadyBorrowed) {
+
+        // Utiliser l'ID utilisateur au lieu du nom
+        final boolean isAlreadyBorrowedByUser = transactionHistoryRepository.isAlreadyBorrowedByUser(bookId, user.getId());
+        if (isAlreadyBorrowedByUser) {
+            throw new OperationNotPermittedException("You already borrowed this book and it is still not returned or the return is not approved by the owner");
+        }
+
+        final boolean isAlreadyBorrowedByOtherUser = transactionHistoryRepository.isAlreadyBorrowed(bookId);
+        if (isAlreadyBorrowedByOtherUser) {
             throw new OperationNotPermittedException("The requested book is already borrowed");
         }
+
         BookTransactionHistory bookTransactionHistory = BookTransactionHistory.builder()
                 .user(user)
                 .book(book)
@@ -161,6 +173,7 @@ public class BookService {
                 .returnApproved(false)
                 .build();
         return transactionHistoryRepository.save(bookTransactionHistory).getId();
+
     }
 
     public Integer returnBorrowedBook(Integer bookId, Authentication connectedUser) {
