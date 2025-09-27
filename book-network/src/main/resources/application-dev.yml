@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://127.0.0.1:5432/book_social_network
-    username: hanae
-    password: hanae123
+    url: ${db_url}
+    username: ${db_name}
+    password: ${db_password}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -32,7 +32,7 @@ spring:
 application:
   security:
     jwt:
-      secret-key: VGhpcySBPGEgbG9uZ2VyIHNlY3JldCBrZXkgZm9yIEpXVCEhISEhISE=
+      secret-key: ${jwt_secret}
       expiration: 8640000
 
   mailing:
