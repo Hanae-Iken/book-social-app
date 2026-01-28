@@ -1,0 +1,253 @@
+@import '../../styles/book-module-shared';
+
+.borrowed-books-container {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Feedback Form Section
+.feedback-section {
+  background: white;
+  border-radius: 16px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 2px solid #e2e8f0;
+  animation: slideDown 0.4s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.feedback-header {
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 2px solid #e2e8f0;
+
+  h2 {
+    margin-bottom: 1rem;
+  }
+}
+
+.book-details {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1rem 2rem;
+  padding: 1.5rem;
+  background: #f7fafc;
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+
+  .detail-label {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    color: #2d3748;
+    display: flex;
+    align-items: center;
+  }
+
+  .detail-value {
+    font-family: 'DM Sans', sans-serif;
+    color: #4a5568;
+    display: flex;
+    align-items: center;
+  }
+}
+
+// Rating Slider
+.rating-slider-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  background: #f7fafc;
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+
+  .form-range {
+    flex: 0 0 30%;
+    height: 8px;
+
+    &::-webkit-slider-thumb {
+      width: 24px;
+      height: 24px;
+      box-shadow: 0 2px 8px rgba(229, 93, 135, 0.3);
+    }
+
+    &::-moz-range-thumb {
+      width: 24px;
+      height: 24px;
+      box-shadow: 0 2px 8px rgba(229, 93, 135, 0.3);
+    }
+  }
+
+  .rating-display {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #2d3748;
+    min-width: 40px;
+    text-align: center;
+  }
+}
+
+// Feedback Textarea
+.feedback-input-wrapper {
+  margin-bottom: 1.5rem;
+
+  textarea.form-control {
+    min-height: 120px;
+    resize: vertical;
+  }
+}
+
+// Form Actions
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  padding-top: 1.5rem;
+  border-top: 2px solid #e2e8f0;
+}
+
+// Table Wrapper
+.table-wrapper {
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+// Table Status Icons
+.table {
+  tbody {
+    tr {
+      td {
+        .status-icons {
+          display: flex;
+          gap: 1rem;
+          align-items: center;
+
+          i {
+            font-size: 1.25rem;
+
+            &.cursor-pointer:hover {
+              filter: brightness(1.2);
+            }
+
+            &.fa-paper-plane {
+              &.text-primary {
+                color: #4299e1;
+              }
+
+              &.text-success {
+                color: #48bb78;
+                animation: paperPlane 2s ease-in-out infinite;
+              }
+            }
+
+            &.fa-circle-check {
+              &.text-success {
+                color: #48bb78;
+                animation: checkBounce 1s ease-in-out;
+              }
+
+              &:not(.text-success) {
+                color: #cbd5e0;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@keyframes paperPlane {
+  0%, 100% {
+    transform: translateX(0) rotate(0deg);
+  }
+  50% {
+    transform: translateX(5px) rotate(-10deg);
+  }
+}
+
+@keyframes checkBounce {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+}
+
+// Pagination Container
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .borrowed-books-container {
+    padding: 1rem;
+  }
+
+  .feedback-section {
+    padding: 1.5rem;
+  }
+
+  .book-details {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .rating-slider-wrapper {
+    flex-direction: column;
+    align-items: stretch;
+
+    .form-range {
+      flex: auto;
+    }
+  }
+
+  .form-actions {
+    flex-direction: column;
+
+    .btn {
+      width: 100%;
+    }
+  }
+
+  .table-wrapper {
+    overflow-x: auto;
+    padding: 1rem;
+  }
+
+  .table {
+    min-width: 600px;
+  }
+}
