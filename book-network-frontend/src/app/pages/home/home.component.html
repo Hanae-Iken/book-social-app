@@ -1,0 +1,49 @@
+<div class="home-container">
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1 class="hero-title">
+        <span class="title-line">Book Social</span>
+        <span class="title-line accent">Network</span>
+      </h1>
+      <p class="hero-subtitle">
+        Votre bibliothèque sociale. Partagez, découvrez et connectez-vous autour de votre passion pour la lecture.
+      </p>
+      <div class="hero-actions">
+        <button class="btn btn-primary" (click)="navigateTo('/register')">
+          Commencer gratuitement
+        </button>
+        <button class="btn btn-secondary" (click)="navigateTo('/login')">
+          Se connecter
+        </button>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="floating-book book-1">📖</div>
+      <div class="floating-book book-2">📕</div>
+      <div class="floating-book book-3">📗</div>
+      <div class="floating-book book-4">📘</div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features">
+    <div class="features-grid">
+      <div class="feature-card" *ngFor="let feature of features; let i = index"
+           [style.animation-delay]="i * 0.1 + 's'">
+        <div class="feature-icon">{{ feature.icon }}</div>
+        <h3 class="feature-title">{{ feature.title }}</h3>
+        <p class="feature-description">{{ feature.description }}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta">
+    <h2 class="cta-title">Prêt à rejoindre la communauté ?</h2>
+    <button class="btn btn-large" (click)="navigateTo('/register')">
+      Créer mon compte
+    </button>
+  </section>
+</div>
