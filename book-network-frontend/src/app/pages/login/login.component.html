@@ -1,27 +1,61 @@
-<div class="container-fluid card login-container">
-  <h3 class="text-center">Login</h3>
-  <hr>
-  <div class="alert alert-danger" role="alert" *ngIf="errorMsg.length">
-    <p *ngFor="let msg of errorMsg">{{ msg }}</p>
-  </div>
-  <div class="mb-3">
-    <label for="login" class="form-label">Email address</label>
-    <input [(ngModel)]="authRequest.email" type="email" class="form-control" id="login" placeholder="name@example.com">
-  </div>
-  <div class="mb-3">
-    <label for="password" class="form-label">Password</label>
-    <input [(ngModel)]="authRequest.password" type="password" class="form-control" id="password" placeholder="password">
-  </div>
-  <div class="d-flex justify-content-between mb-3">
-    <button (click)="login()" type="button" class="btn btn-primary">
-      <em class="fas fa-sign-in-alt">&nbsp;Sign in</em>
-    </button>
-    <div>
-      Don't have an account?&nbsp;
-      <button (click)="register()" type="button" class="btn btn-link">
-        Register
-      </button>
-    </div>
+<div class="auth-wrapper">
+  <div class="auth-background">
+    <div class="floating-book book-1">📖</div>
+    <div class="floating-book book-2">📕</div>
+    <div class="floating-book book-3">📗</div>
   </div>
 
+  <div class="auth-container">
+    <div class="auth-card">
+      <div class="auth-header">
+        <h1 class="auth-title">Bienvenue</h1>
+        <p class="auth-subtitle">Connectez-vous à votre compte</p>
+      </div>
+
+      <div class="error-container" *ngIf="errorMsg.length">
+        <div class="error-message" *ngFor="let msg of errorMsg">
+          <span class="error-icon">⚠️</span>
+          {{ msg }}
+        </div>
+      </div>
+
+      <form class="auth-form">
+        <div class="form-group">
+          <label for="login" class="form-label">Email</label>
+          <input
+            [(ngModel)]="authRequest.email"
+            name="email"
+            type="email"
+            class="form-input"
+            id="login"
+            placeholder="votre@email.com"
+            autocomplete="email">
+        </div>
+
+        <div class="form-group">
+          <label for="password" class="form-label">Mot de passe</label>
+          <input
+            [(ngModel)]="authRequest.password"
+            name="password"
+            type="password"
+            class="form-input"
+            id="password"
+            placeholder="••••••••"
+            autocomplete="current-password">
+        </div>
+
+        <button (click)="login()" type="button" class="btn-submit">
+          <span class="btn-text">Se connecter</span>
+          <span class="btn-icon">→</span>
+        </button>
+      </form>
+
+      <div class="auth-footer">
+        <span class="footer-text">Pas encore de compte ?</span>
+        <button (click)="register()" type="button" class="btn-link">
+          Créer un compte
+        </button>
+      </div>
+    </div>
+  </div>
 </div>

@@ -1,35 +1,87 @@
-<div class="container-fluid card login-container">
-  <h3 class="text-center">Create an account</h3>
-  <hr>
-  <div class="alert alert-danger" role="alert" *ngIf="errorMsg.length">
-    <p *ngFor="let msg of errorMsg">{{ msg }}</p>
-  </div>
-  <div class="mb-3">
-    <label for="firstname" class="form-label">Firstname</label>
-    <input [(ngModel)]="registrerRequest.firstName" type="text" class="form-control" id="firstname" placeholder="Hanae">
-  </div>
-  <div class="mb-3">
-    <label for="lastname" class="form-label">Firstname</label>
-    <input [(ngModel)]="registrerRequest.lastName" type="text" class="form-control" id="lastname" placeholder="Iken">
-  </div>
-  <div class="mb-3">
-    <label for="login" class="form-label">Email address</label>
-    <input [(ngModel)]="registrerRequest.email" type="email" class="form-control" id="login" placeholder="name@example.com">
-  </div>
-  <div class="mb-3">
-    <label for="password" class="form-label">Password</label>
-    <input [(ngModel)]="registrerRequest.password" type="password" class="form-control" id="password" placeholder="password">
-  </div>
-  <div class="d-flex justify-content-between mb-3">
-    <button (click)="register()" type="button" class="btn btn-primary">
-      <em class="fas fa-sign-in-alt">&nbsp;Create an account</em>
-    </button>
-    <div>
-      Already have an account?&nbsp;
-      <button (click)="login()" type="button" class="btn btn-link">
-        Login
-      </button>
-    </div>
+<div class="auth-wrapper">
+  <div class="auth-background">
+    <div class="floating-book book-1">📖</div>
+    <div class="floating-book book-2">📕</div>
+    <div class="floating-book book-3">📗</div>
   </div>
 
+  <div class="auth-container">
+    <div class="auth-card">
+      <div class="auth-header">
+        <h1 class="auth-title">Rejoignez-nous</h1>
+        <p class="auth-subtitle">Créez votre compte gratuitement</p>
+      </div>
+
+      <div class="error-container" *ngIf="errorMsg.length">
+        <div class="error-message" *ngFor="let msg of errorMsg">
+          <span class="error-icon">⚠️</span>
+          {{ msg }}
+        </div>
+      </div>
+
+      <form class="auth-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="firstname" class="form-label">Prénom</label>
+            <input
+              [(ngModel)]="registrerRequest.firstName"
+              name="firstName"
+              type="text"
+              class="form-input"
+              id="firstname"
+              placeholder="Prenom"
+              autocomplete="given-name">
+          </div>
+
+          <div class="form-group">
+            <label for="lastname" class="form-label">Nom</label>
+            <input
+              [(ngModel)]="registrerRequest.lastName"
+              name="lastName"
+              type="text"
+              class="form-input"
+              id="lastname"
+              placeholder="Nom"
+              autocomplete="family-name">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="email" class="form-label">Email</label>
+          <input
+            [(ngModel)]="registrerRequest.email"
+            name="email"
+            type="email"
+            class="form-input"
+            id="email"
+            placeholder="votre@email.com"
+            autocomplete="email">
+        </div>
+
+        <div class="form-group">
+          <label for="password" class="form-label">Mot de passe</label>
+          <input
+            [(ngModel)]="registrerRequest.password"
+            name="password"
+            type="password"
+            class="form-input"
+            id="password"
+            placeholder="••••••••"
+            autocomplete="new-password">
+        </div>
+
+        <button (click)="register()" type="button" class="btn-submit">
+          <span class="btn-text">Créer mon compte</span>
+          <span class="btn-icon">→</span>
+        </button>
+      </form>
+
+      <div class="auth-footer">
+        <span class="footer-text">Déjà inscrit ?</span>
+        <button (click)="login()" type="button" class="btn-link">
+          Se connecter
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
